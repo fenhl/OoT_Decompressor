@@ -8,20 +8,6 @@ This is essentially the same as another decoder be the name of ndec, but I wante
 
 If you want to play the OoT Randomiser, you'll need a decompressed ROM, so you would want to put a compressed ROM through this program first, then use the randomiser.
 
----
-
-Compiling on Linux/Mac: gcc -s -o Decode decoder.c
-
-Compiling on Windows: gcc -s -o Decode.exe decoder.c
-
-You'll probably want MinGW for this if you're on Windows. That's what I used anyway.
-
-If you don't know how to compile stuff on Windows (I sure didn't), oput the extractor folder on your desktop to make it easier to find, open up a command prompt (Press Windows, then type CMD), type cd Desktop/extractor (or whatever the extractor folder is called), then type the command above.
-
----
-
-Usage: Decompress.exe [inputrom.z64]
-
-If you don't know how to run programs on windows with arguments, it's the same process as compiling it, only you replace the gcc line with what's written above.
+Usage: `decompress.exe <INPUT_ROM> [OUTPUT_ROM]`
 
 Or just drag and drop a compressed ROM into decompress.exe
