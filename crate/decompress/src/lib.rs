@@ -5,12 +5,10 @@ use {
         array_ref,
     },
     itermore::IterArrayChunks as _,
-    wheel::traits::IoResultExt as _,
 };
 
 mod crc;
 
-const COMPSIZE: usize = 0x0200_0000;
 const DCMPSIZE: usize = 0x0400_0000;
 
 struct Table {
@@ -55,7 +53,7 @@ fn set_table_entry(out_rom: &mut [u8], tab_start: usize, idx: usize, table: Tabl
     *array_mut_ref![out_rom, tab_start + idx * 16 + 12, 4] = table.end_phys.to_be_bytes();
 }
 
-fn decompress(source: &[u8], decomp: &mut [u8], decomp_size: u32) {
+fn decompress_inner(source: &[u8], decomp: &mut [u8], decomp_size: u32) {
     let mut src_place = 0;
     let mut dst_place = 0;
     let mut dist: usize;
@@ -116,14 +114,8 @@ fn decompress(source: &[u8], decomp: &mut [u8], decomp_size: u32) {
     }
 }
 
-#[derive(clap::Parser)]
-struct Args {
-    input_rom: PathBuf,
-    output_rom: Option<PathBuf>,
-}
-
 #[derive(Debug, thiserror::Error)]
-enum Error {
+pub enum Error {
     #[error(transparent)] TryFromInt(#[from] std::num::TryFromIntError),
     #[error(transparent)] Wheel(#[from] wheel::Error),
     #[error("{} is not the correct size", .0.display())]
@@ -132,27 +124,14 @@ enum Error {
     TableNotFound,
 }
 
-#[wheel::main]
-fn main(Args { input_rom, output_rom }: Args) -> Result<(), Error> {
-    // If no output file was specified, make one
-    // Add "-decomp.z64" to the end of the input file
-    let output_rom = output_rom.unwrap_or_else(|| {
-        let stem = input_rom.file_stem().unwrap_or_default().to_string_lossy();
-        input_rom.with_file_name(format!("{stem}-decomp.z64"))
-    });
-
-    // Load the ROM into in_rom and out_rom
-    let mut in_rom = std::fs::read(&input_rom).at(&input_rom)?;
-    if in_rom.len() != COMPSIZE {
-        return Err(Error::InputSize(input_rom))
-    }
+pub fn decompress(in_rom: &mut [u8]) -> Result<Vec<u8>, Error> {
     // byte swap if needed
     if in_rom[0] == 0x37 {
         for [hi, lo] in in_rom.iter_mut().arrays() {
             (*hi, *lo) = (*lo, *hi);
         }
     }
-    let mut out_rom = in_rom.clone();
+    let mut out_rom = in_rom.to_owned();
     out_rom.resize(DCMPSIZE, 0);
 
     // Find table offsets
@@ -177,7 +156,7 @@ fn main(Args { input_rom, output_rom }: Args) -> Result<(), Error> {
         if temp_tab.end_phys == 0x0000_0000 {
             out_rom.splice(usize::try_from(temp_tab.start_virt)?..usize::try_from(temp_tab.start_virt + size)?, in_rom[usize::try_from(temp_tab.start_phys)?..usize::try_from(temp_tab.start_phys + size)?].iter().copied());
         } else {
-            decompress(&in_rom[usize::try_from(temp_tab.start_phys)?..], &mut out_rom[usize::try_from(temp_tab.start_virt)?..], size);
+            decompress_inner(&in_rom[usize::try_from(temp_tab.start_phys)?..], &mut out_rom[usize::try_from(temp_tab.start_virt)?..], size);
         }
 
         // Clean up outROM's table
@@ -189,7 +168,5 @@ fn main(Args { input_rom, output_rom }: Args) -> Result<(), Error> {
     // Fix the CRC before writing the ROM
     crc::fix_crc(&mut out_rom);
 
-    std::fs::write(&output_rom, out_rom).at(output_rom)?;
-
-    Ok(())
+    Ok(out_rom)
 }

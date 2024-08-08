@@ -8,6 +8,6 @@ This is essentially the same as another decoder be the name of ndec, but I wante
 
 If you want to play the OoT Randomiser, you'll need a decompressed ROM, so you would want to put a compressed ROM through this program first, then use the randomiser.
 
-Usage: `decompress.exe <INPUT_ROM> [OUTPUT_ROM]`
+Usage: `cargo run --release -- <INPUT_ROM> [OUTPUT_ROM]`
 
 Or just drag and drop a compressed ROM into decompress.exe

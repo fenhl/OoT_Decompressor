@@ -1,0 +1,13 @@
+[package]
+name = "decompress"
+version.workspace = true
+edition.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+arrayref = "0.3.8"
+itermore = { version = "0.7.1", features = ["array_chunks"] }
+thiserror = "1.0.63"
+wheel = { git = "https://github.com/fenhl/wheel", branch = "main", default-features = false }
