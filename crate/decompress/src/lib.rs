@@ -137,7 +137,7 @@ pub fn decompress(in_rom: &mut [u8]) -> Result<Vec<u8>, Error> {
     // Find table offsets
     let tab_start = find_table(&in_rom)?;
     let tab = get_table_entry(&in_rom, tab_start, 2);
-    let tab_size = usize::try_from(dbg!(tab.end_virt) - dbg!(tab.start_virt))?;
+    let tab_size = usize::try_from(tab.end_virt - tab.start_virt)?;
     let tab_count = tab_size / 16;
 
     // Set everything past the table in outROM to 0

@@ -344,7 +344,7 @@ checksum = "22ec99545bb0ed0ea7bb9b8e1e9122ea386ff8a48c0922e43f36d45ab09e0e80"
 
 [[package]]
 name = "decompress"
-version = "3.0.0"
+version = "3.0.1"
 dependencies = [
  "arrayref",
  "itermore",
@@ -354,7 +354,7 @@ dependencies = [
 
 [[package]]
 name = "decompress-cli"
-version = "3.0.0"
+version = "3.0.1"
 dependencies = [
  "clap",
  "decompress",
