@@ -18,7 +18,7 @@ struct Table {
     end_virt: u32,
     /// Start Physical Address
     start_phys: u32,
-    /// End Phycical Address
+    /// End Physical Address
     end_phys: u32,
 }
 
