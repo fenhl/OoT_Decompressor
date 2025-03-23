@@ -1,3 +1,6 @@
+#[global_allocator]
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
+
 use {
     std::path::PathBuf,
     wheel::traits::IoResultExt as _,
