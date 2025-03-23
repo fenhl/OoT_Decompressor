@@ -6,6 +6,7 @@ use {
     },
     itermore::IterArrayChunks as _,
 };
+pub use crc::fix_crc;
 
 mod crc;
 
@@ -166,7 +167,7 @@ pub fn decompress(in_rom: &mut [u8]) -> Result<Vec<u8>, Error> {
     }
 
     // Fix the CRC before writing the ROM
-    crc::fix_crc(&mut out_rom);
+    fix_crc(&mut out_rom);
 
     Ok(out_rom)
 }

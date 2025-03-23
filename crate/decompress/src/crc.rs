@@ -146,7 +146,7 @@ fn calc_crc(buf: &[u8]) -> [u32; 2] {
     crc
 }
 
-pub(crate) fn fix_crc(buf: &mut [u8]) {
+pub fn fix_crc(buf: &mut [u8]) {
     let mut crc1 = [0u8; 4];
     let mut crc2 = [0u8; 4];
 
