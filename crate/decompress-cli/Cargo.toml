@@ -10,4 +10,4 @@ workspace = true
 clap = { version = "4.5.13", features = ["derive"] }
 decompress = { path = "../decompress" }
 mimalloc = "0.1.44"
-wheel = { git = "https://github.com/fenhl/wheel", branch = "main", default-features = false }
+wheel = { git = "https://github.com/fenhl/wheel", default-features = false }

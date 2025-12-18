@@ -8,6 +8,6 @@ workspace = true
 
 [dependencies]
 arrayref = "0.3.8"
-itermore = { version = "0.7.1", features = ["array_chunks"] }
+itermore = { version = "0.8", features = ["array_chunks"] }
 thiserror = "2"
-wheel = { git = "https://github.com/fenhl/wheel", branch = "main", default-features = false }
+wheel = { git = "https://github.com/fenhl/wheel", default-features = false }
