@@ -2,12 +2,13 @@
 name = "decompress"
 version.workspace = true
 edition.workspace = true
+rust-version.workspace = true
 
 [lints]
 workspace = true
 
 [dependencies]
-arrayref = "0.3.8"
+arrayref = "0.3"
 itermore = { version = "0.8", features = ["array_chunks"] }
 thiserror = "2"
 wheel = { git = "https://github.com/fenhl/wheel", default-features = false }
